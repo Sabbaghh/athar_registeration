@@ -25,39 +25,42 @@ export default function HomePage() {
 
   return (
     <div className={`min-h-screen relative overflow-hidden ${cairo.className}`}>
-      {/* Placeholder for background asset */}
-      <div className="absolute inset-0 ">
-        <div>
+      <div className="absolute inset-0">
+        <div className="relative w-full h-full">
           <Image
             src="/BackGround.svg"
             fill
-            objectFit="cover"
+            className="object-cover"
             alt="background"
+            priority
           />
         </div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center px-4 py-8">
-        {/* Logo Placeholder */}
-        <div className="mb-8">
-          <div className="w-32 h-20 relative  flex items-center justify-center">
+      <div className="relative z-10 flex flex-col items-center px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        <div className="mb-6 sm:mb-8 lg:mb-10">
+          <div className="w-24 h-16 sm:w-32 sm:h-20 lg:w-40 lg:h-24 relative flex items-center justify-center">
             <Image
-              className="absolute to-0 left-0"
+              className="absolute top-0 left-0"
               src="/Logo.svg"
-              objectFit="contatin"
               fill
+              style={{ objectFit: 'contain' }}
               alt="logo"
+              priority
             />
           </div>
         </div>
 
-        {/* Tagline */}
-        <div className="text-center mb-8">
-          <p className="text-white text-3xl mb-2" dir="rtl">
+        <div className="text-center mb-6 sm:mb-8 lg:mb-10">
+          <p
+            className="text-white text-2xl sm:text-3xl lg:text-4xl mb-2"
+            dir="rtl"
+          >
             نصنع الغد
           </p>
-          <p className="text-white/90 text-3xl">Shaping Tomorrow</p>
+          <p className="text-white/90 text-2xl sm:text-3xl lg:text-4xl">
+            Shaping Tomorrow
+          </p>
         </div>
 
         {/* Registration Form */}
