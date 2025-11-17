@@ -1,15 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { BadgeDisplay } from '@/components/badge-display';
 import Image from 'next/image';
-
 import { Cairo } from 'next/font/google';
+
 const cairo = Cairo({ subsets: ['arabic', 'latin'] });
+
 export default function BadgePage() {
-  const router = useRouter();
-  const [email, setEmail] = useState<string | null>(null);
+  // const searchParams = useSearchParams();
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const cookies = document.cookie.split('; ');
@@ -17,50 +16,45 @@ export default function BadgePage() {
       row.startsWith('registration_token='),
     );
 
-    if (!tokenCookie) {
-      router.push('/');
-      return;
+    if (tokenCookie) {
+      const registrationToken = tokenCookie.split('=')[1];
+      setToken(registrationToken);
     }
+  }, []);
 
-    // Load user data from localStorage
-    const userDataString = localStorage.getItem('userData');
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      setEmail(userData.email);
-    } else {
-      router.push('/');
-    }
-  }, [router]);
-
-  if (!email) {
-    return null;
+  if (!token) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <p className="text-white text-xl">No registration token found</p>
+      </div>
+    );
   }
+
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+    token,
+  )}`;
 
   return (
     <div className={`min-h-screen relative overflow-hidden ${cairo.className}`}>
-      {/* Gradient Background */}
-
-      {/* Placeholder for background asset */}
-      <div className="absolute inset-0 ">
-        <div>
-          <Image
-            src="/BackGround.svg"
-            fill
-            objectFit="cover"
-            alt="background"
-          />
-        </div>
+      {/* Background */}
+      <div className="absolute inset-0">
+        <Image
+          src="/BackGround.svg"
+          fill
+          style={{ objectFit: 'cover' }}
+          alt="background"
+        />
       </div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center px-4 py-8">
-        {/* Logo Placeholder */}
+        {/* Logo */}
         <div className="mb-8">
-          <div className="w-32 h-20 relative  flex items-center justify-center">
+          <div className="w-32 h-20 relative flex items-center justify-center">
             <Image
-              className="absolute to-0 left-0"
+              className="absolute top-0 left-0"
               src="/Logo.svg"
-              objectFit="contatin"
+              style={{ objectFit: 'contain' }}
               fill
               alt="logo"
             />
@@ -75,8 +69,22 @@ export default function BadgePage() {
           <p className="text-white/90 text-3xl">Shaping Tomorrow</p>
         </div>
 
-        {/* Badge Display */}
-        <BadgeDisplay email={email} />
+        {/* Success Message */}
+        <div className="text-center flex flex-col justify-center items-center">
+          <p className="text-white text-6xl mb-8">You&apos;re in!</p>
+          <p className="text-white text-xl mb-12">See you on the Journey!</p>
+
+          {/* View Badge Button */}
+          <div className="w-40 bg-white p-4 rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]">
+            <Image
+              src={qrCodeUrl || '/placeholder.svg'}
+              width={150}
+              height={150}
+              alt="QR Code"
+              className="w-full h-auto"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -10,18 +10,18 @@ import { Cairo } from 'next/font/google';
 const cairo = Cairo({ subsets: ['arabic', 'latin'] });
 
 export default function HomePage() {
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    const cookies = document.cookie.split('; ');
-    const tokenCookie = cookies.find((row) =>
-      row.startsWith('registration_token='),
-    );
+  // useEffect(() => {
+  //   const cookies = document.cookie.split('; ');
+  //   const tokenCookie = cookies.find((row) =>
+  //     row.startsWith('registration_token='),
+  //   );
 
-    if (tokenCookie) {
-      router.push('/badge');
-    }
-  }, [router]);
+  //   if (tokenCookie) {
+  //     router.push('/badge');
+  //   }
+  // }, [router]);
 
   return (
     <div className={`min-h-screen relative overflow-hidden ${cairo.className}`}>
