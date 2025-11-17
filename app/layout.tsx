@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Athar - Shaping tommorrow',
   description: 'Register',
+  icons: '/favicon.ico',
 };
 
 export default function RootLayout({

@@ -8,34 +8,6 @@ import Image from 'next/image';
 import { Cairo } from 'next/font/google';
 const cairo = Cairo({ subsets: ['arabic', 'latin'] });
 export default function BadgePage() {
-  const router = useRouter();
-  const [email, setEmail] = useState<string | null>(null);
-
-  useEffect(() => {
-    const cookies = document.cookie.split('; ');
-    const tokenCookie = cookies.find((row) =>
-      row.startsWith('registration_token='),
-    );
-
-    if (!tokenCookie) {
-      router.push('/');
-      return;
-    }
-
-    // Load user data from localStorage
-    const userDataString = localStorage.getItem('userData');
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      setEmail(userData.email);
-    } else {
-      router.push('/');
-    }
-  }, [router]);
-
-  if (!email) {
-    return null;
-  }
-
   return (
     <div className={`min-h-screen relative overflow-hidden ${cairo.className}`}>
       {/* Gradient Background */}
@@ -76,7 +48,10 @@ export default function BadgePage() {
         </div>
 
         <div>
-          <p>Submitted</p>
+          <p className="text-white text-6xl text-center mt-20">You're in !</p>
+          <p className="text-white text-xl text-center mt-20">
+            See you on the Journey!{' '}
+          </p>
         </div>
       </div>
     </div>

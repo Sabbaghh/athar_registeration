@@ -71,7 +71,7 @@ export function RegistrationForm() {
       }
 
       // Redirect to badge (your existing page will detect cookie if it's set)
-      router.push('/badge');
+      router.push('/done');
     } catch (err: any) {
       // axios error handling (try to extract useful messages)
       if (err?.response) {
@@ -96,6 +96,7 @@ export function RegistrationForm() {
       <div className="bg-white/20 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30">
         <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a8a] mb-4 sm:mb-6">
           Registration
+          <div className="h-1 mt-3 w-10 bg-blue-300" />
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
