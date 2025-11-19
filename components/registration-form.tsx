@@ -385,7 +385,7 @@ export function RegistrationForm() {
               htmlFor="company"
               className="text-sm font-semibold text-[#1e3a8a] flex justify-between"
             >
-              <span>Company</span>
+              <span>Entity</span>
               <span>المؤسسة</span>
             </Label>
             <Input
