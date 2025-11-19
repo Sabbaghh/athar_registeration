@@ -14,6 +14,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { Cairo } from 'next/font/google';
+
+const cairo = Cairo({ subsets: ['arabic', 'latin'] });
+
 const COUNTRIES = [
   { code: 'AF', name: 'Afghanistan', dialCode: '+93' },
   { code: 'AL', name: 'Albania', dialCode: '+355' },
@@ -311,16 +315,16 @@ export function RegistrationForm() {
 
       const data = res.data || {};
 
-      const token =
-        data.uuid ||
-        data.token ||
-        data.registration_token ||
-        data.registrationToken ||
-        data.data?.token ||
-        data.data?.uuid;
-
+      const token = data.uuid;
       if (token) {
         document.cookie = `registration_token=${token}; path=/; max-age=${
+          60 * 60 * 24 * 365
+        }; SameSite=Lax; Secure`;
+      }
+
+      const BadgePdfUrl = data.badge_url;
+      if (BadgePdfUrl) {
+        document.cookie = `BadgePdfUrl=${BadgePdfUrl}; path=/; max-age=${
           60 * 60 * 24 * 365
         }; SameSite=Lax; Secure`;
       }
@@ -346,26 +350,30 @@ export function RegistrationForm() {
   return (
     <div className="w-full max-w-md px-4 sm:px-0">
       <div className="bg-white/20 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30">
-        <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a8a] mb-4 sm:mb-6">
-          Registration
-          <div className="h-1 mt-3 w-10 bg-blue-300" />
-        </h2>
+        <div className="mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a8a] mb-1 flex items-center justify-between">
+            <span>Registration</span>
+            <span>التسجيل</span>
+          </h2>
+          <div className="h-1 w-16 bg-[#3b82f6] rounded-full" />
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           <div className="space-y-2">
             <Label
               htmlFor="fullName"
-              className="text-sm font-medium text-[#1e3a8a]"
+              className="text-sm font-semibold text-[#1e3a8a] flex justify-between"
             >
-              Full Name
+              <span>Full Name</span>
+              <span>الاسم</span>
             </Label>
             <Input
               id="fullName"
               name="fullName"
               type="text"
               required
-              placeholder="Full Name"
-              className="bg-white border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400"
+              placeholder="Please enter your name"
+              className="bg-white/90 border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400 text-gray-800"
               onChange={(e) => {
                 e.target.value = capitalizeWords(e.target.value);
               }}
@@ -375,9 +383,10 @@ export function RegistrationForm() {
           <div className="space-y-2">
             <Label
               htmlFor="company"
-              className="text-sm font-medium text-[#1e3a8a]"
+              className="text-sm font-semibold text-[#1e3a8a] flex justify-between"
             >
-              Company
+              <span>Company</span>
+              <span>المؤسسة</span>
             </Label>
             <Input
               id="company"
@@ -385,7 +394,7 @@ export function RegistrationForm() {
               type="text"
               required
               placeholder="Company name"
-              className="bg-white border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400"
+              className="bg-white/90 border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400 text-gray-800"
               onChange={(e) => {
                 e.target.value = capitalizeWords(e.target.value);
               }}
@@ -395,9 +404,10 @@ export function RegistrationForm() {
           <div className="space-y-2">
             <Label
               htmlFor="email"
-              className="text-sm font-medium text-[#1e3a8a]"
+              className="text-sm font-semibold text-[#1e3a8a] flex justify-between"
             >
-              Email
+              <span>Email</span>
+              <span>البريد الإلكتروني</span>
             </Label>
             <Input
               id="email"
@@ -405,20 +415,21 @@ export function RegistrationForm() {
               type="email"
               required
               placeholder="Email"
-              className="bg-white border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400"
+              className="bg-white/90 border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400 text-gray-800"
             />
           </div>
 
           <div className="space-y-2">
             <Label
               htmlFor="phone"
-              className="text-sm font-medium text-[#1e3a8a]"
+              className="text-sm font-semibold text-[#1e3a8a] flex justify-between"
             >
-              Phone number
+              <span>Phone number</span>
+              <span>رقم الهاتف</span>
             </Label>
             <div className="flex gap-2">
               <Select value={countryCode} onValueChange={setCountryCode}>
-                <SelectTrigger className="w-[100px] bg-white border-white/50 rounded-xl h-11 sm:h-12 md:pt-6 md:pb-6 p-5 ">
+                <SelectTrigger className="w-[100px] bg-white/90 border-white/50 rounded-xl h-11 sm:h-12 text-gray-800 md:pt-6 md:pb-6 p-5">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px]">
@@ -441,30 +452,32 @@ export function RegistrationForm() {
                   required
                   value={phoneNumber}
                   onChange={handlePhoneChange}
-                  placeholder="Phone number"
-                  className="bg-white border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400"
+                  placeholder="Phone number..."
+                  className="bg-white/90 border-white/50 rounded-xl h-11 sm:h-12 placeholder:text-gray-400 text-gray-800"
                 />
               </div>
             </div>
             {phoneError && (
-              <p className="text-red-600 text-xs mt-1">{phoneError}</p>
+              <p className="text-red-600 text-xs mt-1 bg-white/70 px-2 py-1 rounded">
+                {phoneError}
+              </p>
             )}
           </div>
 
           {error && (
             <p
-              className="text-red-200 text-sm bg-red-500/20 p-3 rounded-lg"
+              className="text-red-600 text-sm bg-red-100 p-3 rounded-lg border border-red-200"
               role="alert"
             >
               {error}
             </p>
           )}
 
-          <div className="flex justify-center pt-2">
+          <div className="flex justify-center pt-4">
             <Button
               type="submit"
               disabled={isSubmitting || !!phoneError}
-              className="bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] hover:from-[#2563eb] hover:to-[#0891b2] text-white px-8 py-5 sm:px-12 sm:py-6 rounded-full text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-[#a855f7] via-[#6366f1] to-[#06b6d4] hover:from-[#9333ea] hover:via-[#4f46e5] hover:to-[#0891b2] text-white px-12 py-6 rounded-full text-base font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
