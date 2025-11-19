@@ -39,21 +39,15 @@ export default function HomePage() {
 
       <div className="relative z-10 flex flex-col items-center px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
         <div className="mb-6 sm:mb-8 lg:mb-10">
-          <div className=" mt-10 w-full h-16 sm:h-20  lg:h-24 relative flex flex-col items-center justify-center">
-            {/* <Image
+          <div className="w-96  h-16  sm:h-20  lg:h-24 relative flex items-center justify-center">
+            <Image
               className="absolute top-0 left-0"
-              src="/Logo.svg"
+              src="/Logo.png"
               fill
               style={{ objectFit: 'contain' }}
               alt="logo"
               priority
-            /> */}
-            <p className="md:text-5xl text-2xl font-bold text-white">
-              ملتقى الموظفين 2025
-            </p>
-            <p className="md:text-5xl text-2xl font-bold text-white">
-              ADDED Townhall 2025
-            </p>
+            />
           </div>
         </div>
 
